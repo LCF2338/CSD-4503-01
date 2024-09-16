@@ -1,0 +1,29 @@
+
+#Trigger of the Pipeline
+on:
+  # Initiate the Pipeline when there's a Push Event in the Main Branch
+  push:
+    branches:
+      - main
+
+jobs:
+
+  # Stage 1
+  # Place to add name, short and descriptive
+  build-docker-image:
+    # Or here
+    name: The job to build the application docker image.
+    runs-on: ubuntu-latest
+    #The instructions are defined as steps
+    steps:
+      - name: Echo job
+        run: echo "Building the docker image..."
+
+  #Stage 2
+  unit-test:
+    name: The job to unit test the application docker image.
+    runs-on: ubuntu-latest
+    needs: [build-docker-image] # Wait for last job to finish.
+    steps:
+      - name: Echo unit testing of the application
+        run: echo "Unit test the docker image..."
