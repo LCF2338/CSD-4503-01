@@ -28,7 +28,7 @@ jobs:
         run: docker run -d -p 5000:5000 flask-app-1:v1.0.0 # -d tag lets us run container in background. Good for a server.
 
 
-  #Stage 2
+  # Stage 2
   #unit-test:
     #name: The job to unit test the application docker image.
     #runs-on: ubuntu-latest
