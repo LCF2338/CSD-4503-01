@@ -7,23 +7,32 @@ on:
       - main
 
 jobs:
-
   # Stage 1
   # Place to add name, short and descriptive
   build-docker-image:
     # Or here
     name: The job to build the application docker image.
-    runs-on: ubuntu-latest
+    runs-on: csd-windows-local # Using a self-hosted runner
     #The instructions are defined as steps
     steps:
-      - name: Echo job
-        run: echo "Building the docker image..."
+      - name: Clone and Checkout to the repository
+        uses: actions/checkout@v2 # A GitHub action for a predefined job that clones the project into the workdir.
+      - name: Build Docker Image
+        run: docker build -t flask-app-1:v1.0.0 -f Dockerfile .
+
+  deploy-docker-image:
+    name: Deploy the flask image
+    runs-on: csd-windows-local
+    steps:
+      - name: Deploy the image
+        run: docker run -d -p 5000:5000 flask-app-1:v1.0.0 # -d tag lets us run container in background. Good for a server.
+
 
   #Stage 2
-  unit-test:
-    name: The job to unit test the application docker image.
-    runs-on: ubuntu-latest
-    needs: [build-docker-image] # Wait for last job to finish.
-    steps:
-      - name: Echo unit testing of the application
-        run: echo "Unit test the docker image..."
+  #unit-test:
+    #name: The job to unit test the application docker image.
+    #runs-on: ubuntu-latest
+    #needs: [build-docker-image] # Wait for last job to finish.
+    #steps:
+      #- name: Echo unit testing of the application
+        #run: echo "Unit test the docker image..."
