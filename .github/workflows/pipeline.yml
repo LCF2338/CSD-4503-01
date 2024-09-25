@@ -7,6 +7,7 @@ on:
       - main
 
 jobs:
+
   # Stage 1
   # Place to add name, short and descriptive
   build-docker-image:
@@ -20,8 +21,27 @@ jobs:
       - name: Build Docker Image
         run: docker build -t flask-app-1:v1.0.0 -f Dockerfile .
 
+  test:
+    name: Unit testing of the application
+    needs: [build-docker-image]
+    runs-on: csd-windows-local
+    steps:
+      - name: Clone and Checkout to the repository
+        uses: actions/checkout@v2 # A GitHub action for a predefined job that clones the project into the workdir.
+      - name: Set up a virtual environment
+        run: |
+          python -m venv venv # Create a virtual environment in  directory called venv.
+          venv/Scripts/activate # Activate the virtual environment
+          pip install flask
+          pip install pytest
+      - name: Run unit tests inside the virtual environment
+        run: |
+          venv/Scripts/activate # Activate the virtual environment
+          pytest tests/ # Run the unit testing files under the directoy tests.
+
   deploy-docker-image:
     name: Deploy the flask image
+    needs: [build-docker-image]
     runs-on: csd-windows-local
     steps:
       - name: Deploy the image
