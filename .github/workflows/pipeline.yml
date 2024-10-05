@@ -13,7 +13,7 @@ jobs:
   build-docker-image:
     # Or here
     name: The job to build the application docker image.
-    # runs-on: csd-windows-local
+    # runs-on: csd-windows-local!
     runs-on: aws-debian-runner-1 # Using a self-hosted runner
     #The instructions are defined as steps
     steps:
