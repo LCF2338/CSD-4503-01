@@ -11,6 +11,7 @@ COPY . .
 
 # To install the dependency. Our python is base 3.12, we must install flask.
 RUN pip install flask
+RUN pip install pymongo
 
 # To open port 5000 in the container
 EXPOSE 5000
